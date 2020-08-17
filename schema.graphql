@@ -1,0 +1,10 @@
+type Scores @model {
+  scoresId: String! @isUnique
+  awayTeamId: Int!
+  homeTeaMid: Int!
+  awayTeamScore: Int!
+  homeTeamScore: Int!
+  quarter: Int!
+  time: Int!
+  gameComplete: Boolean
+}
