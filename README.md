@@ -47,7 +47,8 @@ npm run serve
 ```shell
 export BOOTSTRAP_SERVERS=your-bootstrap-server-address:443 \
 export START_TOPIC_NAME=name-of-topic-to-consume-from \
-export TARGET_TOPIC_NAME=name-of-topic-to-produce-to \
+export ONGOING_TOPIC_NAME=name-of-topic-to-produce-to \
+export COMPLETE_TOPIC_NAME=name-of-topic-for-complete-games \
 export CERT_LOCATION=/path-to-pkcs12-cert/es-cert.p12 \
 export CERT_PASSWORD=certificate-password \
 export SCRAM_USERNAME=your-scram-username \
