@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "apollo-boost": "^0.4.9",
+    "apollo-link-ws": "^1.0.20",
     "core-js": "^3.6.5",
     "graphql": "^15.3.0",
+    "subscriptions-transport-ws": "^0.9.18",
     "vue": "^2.6.11",
     "vue-apollo": "^3.0.4"
   },

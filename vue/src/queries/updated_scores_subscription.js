@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
-export const GET_SINGLE_SCORE = gql`query getScore($scoresId: String!) {
-        score(scoresId: $scoresId) {
+export const SCORES_SUBSCRIPTION = gql`subscription onScoreUpdate($scoresId: String!) {
+        scoresUpdated (scoresId: $scoresId) {
             scoresId,
             awayTeamId,
             homeTeamId,
@@ -11,8 +11,5 @@ export const GET_SINGLE_SCORE = gql`query getScore($scoresId: String!) {
             time,
             gameComplete
         }
-    }`
-
-    // gql`mutation deleteScores($scoresId: String!){
-    //     deleteScores(scoresId: $scoresId)
-    //   }`
+    }
+`

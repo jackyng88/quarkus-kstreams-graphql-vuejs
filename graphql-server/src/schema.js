@@ -13,7 +13,7 @@ const typeDefs = gql`
       }
 
     type Query {
-        score(scoresId: String!): Scores!
+        score(scoresId: String!): Scores
         allScores: [Scores!]!
     }
 
@@ -40,12 +40,12 @@ const typeDefs = gql`
           quarter: Int!
           time: Int!
           gameComplete: Boolean!
-          ): Scores!
+          ): String
         
     }
 
     type Subscription {
-        scoresAdded: Scores
+        scoresUpdated: Scores
       }
 `
 

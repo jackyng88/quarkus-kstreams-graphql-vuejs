@@ -20,7 +20,7 @@ public class Producer {
     // This producer will constantly decrement the time/update the score. When the time reaches 00:00 the quarter
     // will increment. When the game reaches the 4th quarter and 00:00, the game is completed.
 
-    Scores mockScore = new Scores("5", 1, 2, 0, 0, 1, 720, false);
+    Scores mockScore = new Scores("12", 1, 2, 0, 0, 1, 720, false);
     private Random random = new Random();
 
 

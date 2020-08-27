@@ -1,11 +1,12 @@
 const bcrypt = require('bcryptjs')
+//import { pubsub } from './pubsub';
+//import { PubSub } from 'apollo-server';
+const { PubSub } = require('apollo-server')
 
+const pubsub = new PubSub();
 
 const resolvers = {
-    Subscription: {
-        
-    },
-
+    
     Query: {
         async score (root, { scoresId }, { models }) {
               return models.Scores.findByPk(scoresId)
@@ -13,7 +14,7 @@ const resolvers = {
         async allScores (root, args, { models }) {
               return models.Scores.findAll()
         }
-      },
+    },
     
     Mutation: {
         async createScores (root, { scoresId, awayTeamId, homeTeamId, awayTeamScore,
@@ -57,8 +58,17 @@ const resolvers = {
                 }  
             )
 
-            return models.Scores.findByPk(scoresId)
+            pubsub.publish("scoreUpdated", { scoresUpdated: { scoresId, awayTeamId, homeTeamId, awayTeamScore,
+                                                             homeTeamScore, quarter, time, gameComplete } });
+            return `Score with ID: ${scoresId} updated`
         }
+    },
+
+    Subscription: {
+        scoresUpdated: {
+            // Additional event labels can be passed to asyncIterator creation
+            subscribe: () => pubsub.asyncIterator(["scoreUpdated"]),
+          },
     },
 }
 

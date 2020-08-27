@@ -10,7 +10,9 @@
       </li>
     </ul>-->
 
-    <li>{{ messages }}</li>
+    <!-- <li>{{ messages }}</li> -->
+
+     <li v-for="score in allScores" :key="score.scoresId">{{ score }}</li>
   </div>
 </template>
 
@@ -20,7 +22,8 @@ import Socket from "./socket";
 import { CREATE_SCORE } from './queries/create_scores'
 import { UPDATE_SCORES } from './queries/update_scores'
 import { GET_ALL_SCORES } from './queries/all_scores'
-//import { GET_SINGLE_SCORE} from './queries/get_single_score'
+import { GET_SINGLE_SCORE} from './queries/get_single_score'
+import { SCORES_SUBSCRIPTION } from './queries/updated_scores_subscription'
 
 export default {
   name: "Test",
@@ -41,42 +44,71 @@ export default {
     };
   },
   apollo: {
-    allScores: GET_ALL_SCORES,
+    // allScores: GET_ALL_SCORES,
+    allScores: {
+        query: GET_ALL_SCORES,
+        subscribeToMore: {
+          document: SCORES_SUBSCRIPTION,
+          updateQuery: (previousData, { subscriptionData }) => {
+            return {
+              allScores: [...previousData.scores, subscriptionData.data.scoresUpdated],
+            };
+          },
+        }
+    }
   },
   methods: {
-    handleMessage(msg) {
+    async handleMessage(msg) {
         this.messages.push(msg);
         let idx = this.messages[this.messages.length - 1]["scoreId"];
         console.log("index is ", idx)
 
-        if (this.scores[idx]) {
-            this.scores[idx]++;
-            this.updateScores(msg);
-        }
-        else {
-            this.scores[idx] = 1;
+        const temp = await this.checkScores(idx)
+        //console.log(temp)
+        //let stuff = temp.then(res => { stuff = res })
+        //console.log(temp.then(res => { stuff = res }))
+        console.log(temp.data.score)
+        if (temp.data.score === null) {
+            //this.scores[idx]++;
+            //this.updateScores(msg);
             this.createScores(msg);
         }
-
-        // if (this.checkScores(idx)) {
-        //     //this.scores[idx]++;
-        //     this.updateScores(msg);
-        // }
-        // else {
-        //     //this.scores[idx] = 1;
-        //     this.createScores(msg);
-        // }
+        else {
+            //this.scores[idx] = 1;
+            //this.createScores(msg);
+            this.updateScores(msg);
+        }
 
     },
-    // checkScores(scoreId) {
-    //     const score = this.$apollo.query({
-    //         query: GET_SINGLE_SCORE,
-    //         variables: {
-    //             scoresId: scoreId
-    //         }
-    //     })
+    async checkScores(scoreId) {
+        let score = this.$apollo.query({
+            query: GET_SINGLE_SCORE,
+            variables: {
+                scoresId: scoreId
+            }
+        })
 
-    //     return (score)
+        console.log("Checking score " + scoreId)
+        //let stuff = await this.promiseValue(score)
+        // let stuff = score.then((res) => {
+        //     res.data.score
+        // })
+
+        // let stuff = await score.then((res) => {
+        //     return res.data.score
+        // })
+
+        // return score.then((res) => {
+        //     res.data.score
+        // })
+        return score
+        //console.log(stuff)
+        //return stuff;
+        //return this.$apollo.queries.singleScore
+    },
+    // promiseValue(score) {
+    //     //return score.then(res => { return res.data.score})
+    //     return 
     // },
     updateScores(msg) {
         console.log(`Update score: # ${msg["scoreId"]}`)
