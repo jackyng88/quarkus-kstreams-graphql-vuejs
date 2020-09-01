@@ -1,18 +1,7 @@
 <template>
   <div id="test">
-    <h2>Vue.js WebSocket Test</h2>
-    <!-- <button v-on:click="sendMessage('hello')">Send Message</button> -->
+    <h2>Vue.js Kafka Streams GraphQL Test</h2>
 
-    <!-- <li v-for="message in messages" :key="message.id">{{ message }}</li> -->
-    <!-- <ul id="messages">
-      <li v-for="message in messages" class="message" :key="message.id">
-        {{ message }}
-      </li>
-    </ul>-->
-
-    <!-- <li>{{ messages }}</li> -->
-
-    <!-- <li v-for="score in allScores" :key="score.scoresId">{{ score }}</li> -->
     <table border="1" width="100%" style="border-collapse: collapse;">
       <tr>
         <th>scoresId</th>
@@ -41,7 +30,6 @@
 
 <script>
 import Socket from "./socket";
-//import gql from 'graphql-tag'
 import { CREATE_SCORE } from "./queries/create_scores";
 import { UPDATE_SCORES } from "./queries/update_scores";
 import { GET_ALL_SCORES } from "./queries/all_scores";
@@ -68,7 +56,6 @@ export default {
     };
   },
   apollo: {
-    // allScores: GET_ALL_SCORES,
     allScores: {
       query: GET_ALL_SCORES,
       subscribeToMore: {
@@ -79,28 +66,22 @@ export default {
           };
         },
         update(data) {
-          // This function returns our QUERY into the data property "items" when the component is loaded.
           return data.allScores;
         },
         updateQuery: (previousData, { subscriptionData }) => {
-          // return {
-          //   allScores: [...previousData.allScores, subscriptionData.data.scoresUpdated],
-          // };
-
           const updatedScoreIndex = previousData.allScores.findIndex(
             (scores) =>
               scores.scoresId === subscriptionData.data.scoresUpdated.scoresId
           );
 
           const updatedScore = subscriptionData.data.scoresUpdated;
-          //const newAllScores = previousData.allScores.slice();
           const newAllScores = [...previousData.allScores];
           newAllScores[updatedScoreIndex] = updatedScore;
           const result = {
             ...previousData,
             allScores: newAllScores,
           };
-          
+
           return result;
         },
       },
@@ -111,19 +92,15 @@ export default {
       this.messages.push(msg);
       let idx = this.messages[this.messages.length - 1]["scoreId"];
       console.log("index is ", idx);
-
       const temp = await this.checkScores(idx);
-      //console.log(temp)
-      //let stuff = temp.then(res => { stuff = res })
-      //console.log(temp.then(res => { stuff = res }))
       console.log(temp.data.score);
+
       if (temp.data.score === null) {
-        //this.scores[idx]++;
-        //this.updateScores(msg);
+
         this.createScores(msg);
-      } else {
-        //this.scores[idx] = 1;
-        //this.createScores(msg);
+      } 
+      else {
+
         this.updateScores(msg);
       }
     },
@@ -136,27 +113,10 @@ export default {
       });
 
       console.log("Checking score " + scoreId);
-      //let stuff = await this.promiseValue(score)
-      // let stuff = score.then((res) => {
-      //     res.data.score
-      // })
 
-      // let stuff = await score.then((res) => {
-      //     return res.data.score
-      // })
-
-      // return score.then((res) => {
-      //     res.data.score
-      // })
       return score;
-      //console.log(stuff)
-      //return stuff;
-      //return this.$apollo.queries.singleScore
     },
-    // promiseValue(score) {
-    //     //return score.then(res => { return res.data.score})
-    //     return
-    // },
+
     updateScores(msg) {
       console.log(`Update score: # ${msg["scoreId"]}`);
       this.$apollo.mutate({
@@ -189,9 +149,6 @@ export default {
         },
       });
     },
-    // checkScore(scoresId) {
-    //     // check if this record exists already in the database.
-    // }
   },
   created() {
     Socket.$on("message", this.handleMessage);

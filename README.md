@@ -4,6 +4,57 @@ This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
 
+## Prereqs
+
+- Maven
+
+- Node/NPM
+
+- Java
+
+- Access to Kafka Topics
+
+## Starting the GraphQL API Server
+
+- Change directory into the `graphql-server` folder.
+
+- Run the server
+
+```shell
+node src/index.js
+```
+
+- You can perform queries directly on the GraphQL API at `localhost:4000`
+
+## Start VueJS
+
+- Vue along with Vue-Apollo is used for the frontend portions as well as utilizing Apollo Client for connections with a GraphQL APi Server.
+
+- Change directories into the `vue` folder from the root directory.
+
+- Start the server
+
+```shell
+npm run serve
+```
+
+- View at `localhost:8080`
+
+## Exporting Environment Variables for our Quarkus Application
+
+- The Quarkus application will need access to the following environment variables.
+
+```shell
+export BOOTSTRAP_SERVERS=your-bootstrap-server-address:443 \
+export START_TOPIC_NAME=name-of-topic-to-consume-from \
+export ONGOING_TOPIC_NAME=name-of-topic-to-produce-to \
+export COMPLETE_TOPIC_NAME=name-of-topic-for-complete-games \
+export CERT_LOCATION=/path-to-pkcs12-cert/es-cert.p12 \
+export CERT_PASSWORD=certificate-password \
+export SCRAM_USERNAME=your-scram-username \
+export SCRAM_PASSWORD=your-scram-password \
+```
+
 ## Running the application in dev mode
 
 You can run your application in dev mode that enables live coding using:
