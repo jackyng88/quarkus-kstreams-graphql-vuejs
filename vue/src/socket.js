@@ -1,5 +1,6 @@
 import Vue from "vue"
 
+// Connecting to the Kafka Streams WebSocket Server
 const socket = new WebSocket("ws://localhost:8085/ongoing")
 
 const emitter = new Vue({

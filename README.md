@@ -1,4 +1,4 @@
-# quarkus-kafka-vuejs-app project
+# quarkus-kafka-graphql-vuejs-app project
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
