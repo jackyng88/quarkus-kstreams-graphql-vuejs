@@ -12,7 +12,3 @@ export const GET_SINGLE_SCORE = gql`query getScore($scoresId: String!) {
             gameComplete
         }
     }`
-
-    // gql`mutation deleteScores($scoresId: String!){
-    //     deleteScores(scoresId: $scoresId)
-    //   }`

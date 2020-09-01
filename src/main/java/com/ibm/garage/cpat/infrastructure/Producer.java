@@ -43,10 +43,6 @@ public class Producer {
                 mock.quarter += 1;
                 mock.time = 720;
             }
-
-            // else if (mock.quarter == 4 && mock.time == 0) {
-            //     mock.gameComplete = true;
-            // }
         }
 
         // Game is finished

@@ -27,7 +27,6 @@ public class BasketballTopology {
     // The topology will have a KStream for the constantly updating game score, it will then 
     // do a join by teamId on a KTable and enrich the message with the teamNames. It will then
     // output this to a topic.
-
     @ConfigProperty(name = "START_TOPIC_NAME")
     private String INCOMING_TOPIC;
 

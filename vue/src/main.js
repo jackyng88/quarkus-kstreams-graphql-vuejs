@@ -47,25 +47,50 @@ import Test from './Test.vue'
 Vue.config.productionTip = false
 
 const httpLink = new HttpLink({
-    uri: 'http://localhost:4000/'
+    uri: 'http://localhost:4000/graphql'
 })
 
 const wsLink = new WebSocketLink({
-    uri: 'wss://192.168.0.2:5000/websocket/',
+    //uri: 'ws://192.168.0.6:5000/websocket/',
     //uri: 'ws://localhost:5000/websocket/',
+    //uri: 'ws://192.168.0.6:5000/',
+    uri: 'ws://localhost:4000/graphql',
     options: {
       reconnect: true,
       lazy: true
     }
 })
 
+wsLink.subscriptionClient.on('connecting', () => {
+  console.log('connecting');
+});
+
+wsLink.subscriptionClient.on('connected', () => {
+  console.log('connected');
+});
+
+wsLink.subscriptionClient.on('reconnecting', () => {
+  console.log('reconnecting');
+});
+
+wsLink.subscriptionClient.on('reconnected', () => {
+  console.log('reconnected');
+});
+
+wsLink.subscriptionClient.on('disconnected', () => {
+  console.log('disconnected');
+});
+
 wsLink.subscriptionClient.maxConnectTimeGenerator.duration = () =>
   wsLink.subscriptionClient.maxConnectTimeGenerator.max;
 
 const link = split(
     ({ query }) => {
-    const { kind, operation } = getMainDefinition(query)
-    return kind === 'OperationDefinition' && operation === 'subscription'
+      const definition = getMainDefinition(query);
+      return (
+        definition.kind === "OperationDefinition" &&
+        definition.operation === "subscription"
+      );
     },
     wsLink,
     httpLink

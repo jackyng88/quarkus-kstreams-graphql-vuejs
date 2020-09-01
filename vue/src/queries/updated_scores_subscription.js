@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
-export const SCORES_SUBSCRIPTION = gql`subscription onScoreUpdate($scoresId: String!) {
-        scoresUpdated (scoresId: $scoresId) {
+export const SCORES_SUBSCRIPTION = gql`subscription onScoreUpdate {
+        scoresUpdated  {
             scoresId,
             awayTeamId,
             homeTeamId,
