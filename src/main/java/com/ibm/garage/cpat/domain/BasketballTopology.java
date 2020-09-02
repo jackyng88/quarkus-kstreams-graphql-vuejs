@@ -59,6 +59,17 @@ public class BasketballTopology {
             (key, scores) -> !scores.gameComplete
         );
 
+        branches[0].peek((key, scores) -> {
+            ongoingEndPoint.getSessions().forEach(s -> {
+                try {
+                    s.getBasicRemote().sendText(obj.writeValueAsString(scores));
+                }
+                catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+        });
+
         branches[0].to(
             COMPLETE_TOPIC,
             Produced.with(Serdes.String(), scoresSerde)

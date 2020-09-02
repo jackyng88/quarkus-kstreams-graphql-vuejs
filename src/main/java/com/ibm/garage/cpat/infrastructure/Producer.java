@@ -20,7 +20,7 @@ public class Producer {
     // This producer will constantly decrement the time/update the score. When the time reaches 00:00 the quarter
     // will increment. When the game reaches the 4th quarter and 00:00, the game is completed.
 
-    Scores mockScore = new Scores("12", 1, 2, 0, 0, 1, 720, false);
+    Scores mockScore = new Scores("14", 1, 2, 0, 0, 1, 720, false);
     private Random random = new Random();
 
 
@@ -33,12 +33,19 @@ public class Producer {
     }
 
     public KafkaRecord<String, Scores> runGame(Scores mock) {
-        
+
+        // Start a new game if the previous one finished.
+        if (mock.gameComplete) {
+            mock = startNewGame(mock);
+        }
+
+        // Ongoing game score calculation
         if (mock.quarter < 5 && mock.time > 0) {
             mock.time -= 20;
             mock.awayTeamScore = calculateScore(mock.awayTeamScore);
             mock.homeTeamScore = calculateScore(mock.homeTeamScore);
 
+            // End of quarters 1, 2 and 3.
             if (mock.quarter < 4 && mock.time == 0) {
                 mock.quarter += 1;
                 mock.time = 720;
@@ -46,7 +53,7 @@ public class Producer {
         }
 
         // Game is finished
-        if (mock.quarter == 4 && mock.time == 0) {
+        else if (mock.quarter == 4 && mock.time == 0) {
             mock.gameComplete = true;
         }
 
@@ -75,5 +82,15 @@ public class Producer {
         }
 
         return score + points;
+    }
+
+    public Scores startNewGame(Scores mock) {
+        String newScoreId = String.valueOf(Integer.parseInt(mock.scoreId) + 1);
+        int newAwayTeamId = mock.awayTeamId + 2;
+        int newHomeTeamId = mock.homeTeamId + 2;
+
+        Scores newMockScore = new Scores (newScoreId, newAwayTeamId, newHomeTeamId, 0, 0, 1, 720, false);
+        
+        return newMockScore;
     }
 }

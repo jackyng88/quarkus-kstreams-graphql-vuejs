@@ -1,6 +1,6 @@
-import { PubSub } from 'apollo-server';
+// import { PubSub } from 'apollo-server';
 
-export const pubsub = new PubSub();
+// export const pubsub = new PubSub();
 
-//export default pubsub;
-module.exports = pubsub
+// //export default pubsub;
+// module.exports = pubsub

@@ -1,6 +1,3 @@
-const bcrypt = require('bcryptjs')
-//import { pubsub } from './pubsub';
-//import { PubSub } from 'apollo-server';
 const { PubSub } = require('apollo-server')
 
 const pubsub = new PubSub();

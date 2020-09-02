@@ -6,7 +6,6 @@ import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
 import Vue from 'vue'
 import VueApollo from 'vue-apollo'
-//import App from './App.vue'
 import Test from './Test.vue'
 
 Vue.config.productionTip = false

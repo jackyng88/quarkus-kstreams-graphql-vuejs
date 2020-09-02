@@ -96,11 +96,10 @@ export default {
       console.log(temp.data.score);
 
       if (temp.data.score === null) {
-
         this.createScores(msg);
+        location.reload();
       } 
       else {
-
         this.updateScores(msg);
       }
     },
